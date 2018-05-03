@@ -3,6 +3,8 @@
 
 ## [COM 331 Project Two (Continuation of Project One: TabTasks)](https://courses.karlstolley.com/app/projects/#project-two), Professor Karl Stolley
 
+## You can visit the [deployed version here, on Heroku!](https://mysterious-tor-88141.herokuapp.com/tasks)
+
 ## What's different between this and [Project One](https://github.com/jmynes/COM331-TabTasks/tree/project-1)?
 * This project now has an [Upstream master branch](https://github.com/COM331-Jordan-Harris-Project/COM331-TabTasks)
   * The [original repo](https://github.com/jmynes/COM331-TabTasks/tree/master) was:
@@ -32,6 +34,48 @@
 >$ rails s
 
 > Browse to 0.0.0.0:3000/tasks
+
+### Heroku Deployment
+Add the output of the below command to .bashrc, .zshrc, or wherever your local environment variables are stored.
+>$ rake secret
+
+Make sure you've updated your environment variables. This might look like (but you can also log out and back in):
+>$ source ~/.bashrc
+
+Now run the following to get your production key:
+>$ rails secrets:setup
+
+We ran this command and exited the text editor it brought up. We're not sure it helped, but deploying to Heroku was being finnicky, so I'm documenting it anyway:
+>$ rails secrets:edit
+
+Now run (from your project root directory):
+>$ heroku create
+
+Verify that it added the correct link for your Heroku deployment
+>$ git remote -v
+
+And deploy/migrate! We could probably fix this with procfile...
+>$ git push heroku master
+
+>$ heroku rake db:migrate
+
+>$ heroku rake db:seed
+
+And finally, go to the URL!
+
+If it's not working:
+* Grab your RAILS_MASTER_KEY that you generated (currently residing in your environment variables)
+  * Go to your application in Heroku, under settings > config variables add RAILS_MASTER_KEY, and then the key.
+
+#### OAuth
+On Github: For our org, we went to Developer Settings > OAuth Apps
+* New OAuth App
+  * Name the application
+  * Homepage URL is our Github repo URL
+  * Callback URL is our heroku [root URL](https://mysterious-tor-88141.herokuapp.com/tasks)
+
+In Heroku's web control panel:
+* Go to your application in Heroku, under settings > config variables add GITHUB_ID and GITHUB_SECRET, found in your Github dev settings panel opened in the previous step.
 
 
 ## Problem
